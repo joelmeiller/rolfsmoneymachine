@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useConfigStore } from '@/stores/config';
 import TheWelcome from '../components/TheWelcome.vue'
 
 defineProps<{
@@ -8,6 +9,9 @@ defineProps<{
     onClick: () => void
   }
 }>()
+
+const { setConfig } = useConfigStore()
+
 </script>
 
 <template>

@@ -3,7 +3,7 @@
 #app {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 16px 32px;
   font-weight: normal;
 }
 
@@ -33,6 +33,7 @@ a,
       'main';
     grid-template-rows: 128px 1fr;
     row-gap: 32px;
+    padding: 16px 64px;
   }
   #app header {
     grid-area: header;
@@ -44,10 +45,10 @@ a,
 
 h1 {
   font-size: 3rem;
-  line-height: 1.25;
+  line-height: 1.1;
   font-weight: 500;
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: 48px;
 }
 
 h2 {

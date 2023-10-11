@@ -1,14 +1,15 @@
-import type { TranslatorProgress, TranslatorResult } from '../types/translator'
-
+import type { Language, TranslatorProgress, TranslatorResult } from '../types/translator'
+import { TranslatorWorker } from './TranslatorWorker'
 export const TranslatorService = {
   run: (params: {
-    file: File
-    languages: Array<string>
-    numRows: Number
-    onFinished: (data: TranslatorResult) => void
+    filePath: string
+    languages: Array<Language>
+    numRows: number
+    onDone: (data: TranslatorResult) => void
     onProgress: (data: TranslatorProgress) => void
   }) => {
     // Rund code in worker
+    TranslatorWorker.run(params)
     // const worker = new Worker(new URL('./translator.worker.js', import.meta.url))
     // worker.postMessage(params)
     // worker.onmessage = (event) => {

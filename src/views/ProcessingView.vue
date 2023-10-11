@@ -1,12 +1,37 @@
 <script setup lang="ts">
 import { defineProps } from 'vue'
+import { useConfigStore } from '@/stores/config';
+import { TranslatorService } from '@/services/TranslatorService'
 
-import { Translator } from '@/services/Translator'
-
-defineProps<{
+const props = defineProps<{
   title: string
   description: string
+  onDone: () => void,
+  onAbort: {
+    label: string
+    onClick: () => void
+  }
 }>()
+
+const { filePath, languages, numRows } = useConfigStore()
+
+// Go back to start if there is a missing config
+if (filePath === null || languages.length === 0 || numRows === 0) {
+  props.onAbort.onClick()
+}
+
+TranslatorService.run({
+  filePath: filePath!,
+  languages,
+  numRows,
+  onDone: (result) => {
+    console.log(result)
+    props.onDone()
+  },
+  onProgress: (progress) => {
+    console.log(progress)
+  },
+})
 
 </script>
 
@@ -16,6 +41,7 @@ defineProps<{
 
     <section>
       <p>{{ description }}</p>
+      <button type="button" @click="onAbort.onClick">{{ onAbort.label }}</button>
     </section>
 
   </main>

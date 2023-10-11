@@ -3,19 +3,19 @@ import { defineStore } from 'pinia'
 import type { Language } from '@/types/translator'
 
 export const useConfigStore = defineStore('config', () => {
-  const file = ref<string | null>(null)
+  const filePath = ref<string | null>(null)
   const languages = ref<Array<Language>>([])
-  const numRows = ref<Number>(0)
+  const numRows = ref<number>(0)
 
   // Set actions
-  const setFile = (params: { file: string }) => {
-    file.value = params.file
+  const setFile = (params: { filePath: string }) => {
+    filePath.value = params.filePath
   }
 
-  const setConfig = (params: { languages: Array<Language>; numRows: Number }) => {
+  const setConfig = (params: { languages: Array<Language>; numRows: number }) => {
     languages.value = params.languages
     numRows.value = params.numRows
   }
 
-  return { file, languages, numRows, setFile, setConfig }
+  return { filePath, languages, numRows, setFile, setConfig }
 })

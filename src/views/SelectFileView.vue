@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
+import { useConfigStore } from '@/stores/config';
 
 defineProps<{
   title: string
@@ -9,6 +9,16 @@ defineProps<{
     onClick: () => void
   }
 }>()
+
+const { setFile } = useConfigStore()
+
+const onSelectFile = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  const file = target.files?.[0]
+  if (file) {
+    setFile({ filePath: file.name })
+  }
+}
 </script>
 
 <template>
@@ -20,7 +30,7 @@ defineProps<{
 
         <div>
           <label for="file">Select a file:</label>
-          <input type="file">
+          <input type="file" @change="onSelectFile">
         </div>
 
         <button type="button" @click="button.onClick">{{ button.label }}</button>
