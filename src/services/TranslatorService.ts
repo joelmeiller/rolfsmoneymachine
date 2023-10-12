@@ -1,4 +1,5 @@
-import type { Language, TranslatorProgress, TranslatorResult } from '../types/translator'
+import type { TranslatorProgress, TranslatorResult } from '../types/translator'
+import { Language } from '../types/enums'
 import { TranslatorWorker } from './TranslatorWorker'
 export const TranslatorService = {
   run: (params: {

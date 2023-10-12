@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Label from '@/components/form/Label.vue';
 import { useConfigStore } from '@/stores/config';
 
 defineProps<{
@@ -19,6 +20,9 @@ const onSelectFile = (event: Event) => {
     setFile({ filePath: file.name })
   }
 }
+
+
+
 </script>
 
 <template>
@@ -29,7 +33,7 @@ const onSelectFile = (event: Event) => {
         <p>{{ description }}</p>
 
         <div>
-          <label for="file">Select a file:</label>
+          <Label text="Select a file" />
           <input type="file" @change="onSelectFile">
         </div>
 

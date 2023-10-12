@@ -9,9 +9,3 @@ export type TranslatorResult = {
   numFailed: number
   numTotal: number
 }
-
-export enum Language {
-  English = 'EN',
-  French = 'FR',
-  Italian = 'IT',
-}

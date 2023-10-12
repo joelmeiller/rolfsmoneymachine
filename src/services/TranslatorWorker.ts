@@ -2,7 +2,7 @@ import axios from 'axios'
 import * as XLSX from 'xlsx'
 // import * as fs from 'fs/promises'
 import type { TranslatorProgress, TranslatorResult } from '../types/translator'
-import { Language } from '../types/translator'
+import { Language } from '../types/enums'
 
 // Define your DeepL API key and endpoint
 const apiKey = 'YOUR_DEEPL_API_KEY'
