@@ -1,0 +1,41 @@
+{
+  "name": "bob-dashboard-webapp-server",
+  "version": "0.0.1",
+  "private": true,
+  "description": "The backend for frontend (BFF) of the bob-dashboard-webapp application.",
+  "author": "Joel Meiller <joel.meiller@bob.ch>",
+  "type": "module",
+  "scripts": {
+    "start": "yarn server:run",
+    "build": "yarn server:clean && yarn server:build",
+    "server:clean": "rimraf build",
+    "server:run": "ts-node ./src/index.mts",
+    "server:build": "tsc",
+    "test": "jest --watch",
+    "prettier:fix": "yarn prettier --write ."
+  },
+  "dependencies": {
+    "compression": "^1.7.4",
+    "deepl-node": "^1.10.2",
+    "dirname-filename-esm": "^1.1.1",
+    "dotenv": "^16.0.0",
+    "envalid": "^7.2.2",
+    "express": "^4.17.1",
+    "helmet": "^5.0.2",
+    "morgan": "^1.10.0",
+    "ts-node": "^10.9.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.20",
+    "@types/node": "^16.18.58",
+    "babel-jest": "^27.4.5",
+    "chai": "^4.3.4",
+    "cross-env": "^7.0.3",
+    "esbuild": "^0.14.21",
+    "jest": "^27.4.5",
+    "prettier": "^2.4.1",
+    "rimraf": "^5.0.1",
+    "tsc": "^2.0.4",
+    "typescript": "^5.1.3"
+  }
+}
