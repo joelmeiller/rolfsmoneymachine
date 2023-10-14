@@ -5,21 +5,23 @@ import * as envalid from 'envalid'
 dotenv.config({ path: './.env' })
 
 type EnvConfig = {
+  DEEPL_API_KEY: string
+  DEEPL_API_ACTIVE: boolean
   NODE_ENV: string
   PORT: number
   PUBLIC_URL: string
-  DEEPL_API_KEY: string
 }
 
 // https://github.com/af/envalid#envalidcleanenvenvironment-validators-options
 export const Config = envalid.cleanEnv<EnvConfig>(process.env, {
+  // DeepL API settings
+  DEEPL_API_KEY: envalid.str({ default: '' }),
+  DEEPL_API_ACTIVE: envalid.bool({ default: true }),
+
   // Node settings
   NODE_ENV: envalid.str({
-    choices: ['production', 'stage', 'test', 'development']
+    choices: ['production', 'development']
   }),
-  PORT: envalid.port({ devDefault: 3001 }),
-
-  PUBLIC_URL: envalid.url({ devDefault: 'http://localhost:5000' }),
-
-  DEEPL_API_KEY: envalid.str({ default: '' })
+  PORT: envalid.port({ devDefault: 5201 }),
+  PUBLIC_URL: envalid.url({ devDefault: 'http://localhost:5201' })
 })

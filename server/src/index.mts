@@ -1,3 +1,4 @@
+import bodyParser from 'body-parser'
 import compression from 'compression'
 import { dirname } from 'dirname-filename-esm'
 import type { Request } from 'express'
@@ -31,10 +32,13 @@ async function startServer() {
         req.originalUrl.startsWith('/manifest') ||
         req.originalUrl.startsWith('/static') ||
         req.originalUrl.startsWith('/assets') ||
-        req.originalUrl.startsWith('/css'),
-    }),
+        req.originalUrl.startsWith('/css')
+    })
   )
   app.use(compression())
+
+  // parse application/json
+  app.use(bodyParser.json())
 
   // DeepL services
   const deepLController = DeepLController()
@@ -48,7 +52,7 @@ async function startServer() {
   // Health check
   app.get(
     '/health/ready',
-    (_req, res) => res.send('healthy'), // used by Kubernetes to decide when the application is ready to receive traffic
+    (_req, res) => res.send('healthy') // used by Kubernetes to decide when the application is ready to receive traffic
   )
 
   // https://expressjs.com/en/starter/static-files.html
@@ -66,7 +70,7 @@ async function startServer() {
 
   console.log(
     logStyleStr,
-    ` 🌸 🧚🏻‍♀️ 🌺 Backend for Frontend available (BfF) at port ${Config.PORT} under ${Config.PUBLIC_URL} 🌼 🐉 🌻 `,
+    ` 🌸 🧚🏻‍♀️ 🌺 Backend for Frontend available (BfF) at port ${Config.PORT} under ${Config.PUBLIC_URL} 🌼 🐉 🌻 `
   )
   console.log('')
 }
