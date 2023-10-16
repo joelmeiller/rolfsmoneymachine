@@ -7,9 +7,10 @@ import { Language } from '../types/enums'
 // Define your DeepL API key and endpoint
 const apiKey = 'YOUR_DEEPL_API_KEY'
 const deepLApiEndpoint = 'https://api.deepl.com/v2/translate'
+const serverDeepLApiEndpoint = 'http://localhost:5201/api/deepL/translate'
 
 // Function to translate text using DeepL API
-async function translateText(text: string, targetLanguage: string): Promise<string> {
+const translateText = async (text: string, targetLanguage: string): Promise<string> => {
   try {
     const response = await axios.post(deepLApiEndpoint, {
       text,
@@ -24,18 +25,54 @@ async function translateText(text: string, targetLanguage: string): Promise<stri
   }
 }
 
+const translateTextServer = async (text: string, targetLanguage: string): Promise<string> => {
+  try {
+    const response = await axios.post(serverDeepLApiEndpoint, {
+      textList: [text],
+      targetLanguage
+    })
+
+    return response.data.translatedTextList[0]
+  } catch (error: any) {
+    console.error(`Error translating text: ${error.message}`)
+    return ''
+  }
+}
+
 export const TranslatorWorker = {
   run: async (params: {
-    filePath: string
+    file: File
+    languages: Array<Language>
+    numRows: number
+    onDone: (data: TranslatorResult) => void
+    onProgress: (data: TranslatorProgress) => void
+  }) => {
+    const reader = new FileReader()
+    reader.onload = (e: any) => {
+      /* Parse data */
+      const bstr = e.target.result
+      TranslatorWorker.processExcel({
+        workbook: XLSX.read(bstr, { type: 'binary' }),
+        languages: params.languages,
+        numRows: params.numRows,
+        onDone: params.onDone,
+        onProgress: params.onProgress
+      })
+    }
+
+    reader.readAsBinaryString(params.file)
+  },
+
+  processExcel: async (params: {
+    workbook: XLSX.WorkBook
     languages: Array<Language>
     numRows: number
     onDone: (data: TranslatorResult) => void
     onProgress: (data: TranslatorProgress) => void
   }) => {
     // Load the Excel file and get the worksheet
-    const workbook = XLSX.readFile(params.filePath)
-    const sheetName = workbook.SheetNames[0] // Assuming you want to work with the first sheet
-    const worksheet = workbook.Sheets[sheetName]
+    const sheetName = params.workbook.SheetNames[0] // Assuming you want to work with the first sheet
+    const worksheet = params.workbook.Sheets[sheetName]
 
     // Initialize an empty array to store the translated data
     const translatedData: Record<string, string>[] = []
@@ -51,10 +88,10 @@ export const TranslatorWorker = {
 
       const sourceText = cell.v
 
-      // Translate the source text to French, Italian, and English
-      const frenchTranslation = await translateText(sourceText, 'FR')
-      const italianTranslation = await translateText(sourceText, 'IT')
-      const englishTranslation = await translateText(sourceText, 'EN')
+      // Translate the source text into the target languages
+      const frenchTranslation = await translateTextServer(sourceText, 'FR')
+      const italianTranslation = await translateTextServer(sourceText, 'IT')
+      const englishTranslation = await translateTextServer(sourceText, 'EN')
 
       // Push the translations to the translatedData array
       translatedData.push({

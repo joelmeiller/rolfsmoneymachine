@@ -1,15 +1,15 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { Language } from '@/types/translator'
+import type { Language } from '@/types/enums'
 
 export const useConfigStore = defineStore('config', () => {
-  const filePath = ref<string | null>(null)
+  const file = ref<File | null>(null)
   const languages = ref<Array<Language>>([])
   const numRows = ref<number>(0)
 
   // Set actions
-  const setFile = (params: { filePath: string }) => {
-    filePath.value = params.filePath
+  const setFile = (params: { file: File }) => {
+    file.value = params.file
   }
 
   const setConfig = (params: { languages: Array<Language>; numRows: number }) => {
@@ -17,5 +17,5 @@ export const useConfigStore = defineStore('config', () => {
     numRows.value = params.numRows
   }
 
-  return { filePath, languages, numRows, setFile, setConfig }
+  return { file, languages, numRows, setFile, setConfig }
 })

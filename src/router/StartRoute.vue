@@ -4,7 +4,7 @@ import StartView from '@/views/StartView.vue';
 
 <template>
   <StartView
-    title="Bist du bereit Rolf?"
+    title="Bist du bereit?"
     description="Denn hier kommt deine ganz persönliche Money Machine. File auswählen, Sprachen selektieren und los geht's!"
     :button="{
       label: `Na dann: Let's make some money 🤑`,

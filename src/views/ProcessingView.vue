@@ -13,15 +13,15 @@ const props = defineProps<{
   }
 }>()
 
-const { filePath, languages, numRows } = useConfigStore()
+const { file, languages, numRows } = useConfigStore()
 
 // Go back to start if there is a missing config
-if (filePath === null || languages.length === 0 || numRows === 0) {
+if (file === null || languages.length === 0 || numRows === 0) {
   props.onAbort.onClick()
 }
 
 TranslatorService.run({
-  filePath: filePath!,
+  file: file!,
   languages,
   numRows,
   onDone: (result) => {

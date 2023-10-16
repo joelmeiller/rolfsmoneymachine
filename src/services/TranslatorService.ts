@@ -3,7 +3,7 @@ import { Language } from '../types/enums'
 import { TranslatorWorker } from './TranslatorWorker'
 export const TranslatorService = {
   run: (params: {
-    filePath: string
+    file: File
     languages: Array<Language>
     numRows: number
     onDone: (data: TranslatorResult) => void

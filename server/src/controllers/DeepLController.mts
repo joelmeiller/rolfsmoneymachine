@@ -39,11 +39,11 @@ export const DeepLController = () => {
         return res.status(400).json({ error: 'Invalid request' })
 
       try {
-        const trasnlatedTextList = await translateText({
+        const translatedTextList = await translateText({
           textList: req.body.textList,
           targetLanguage: req.body.targetLanguage
         })
-        res.json(trasnlatedTextList)
+        res.json({ translatedTextList })
       } catch (error) {
         console.error(error)
         res.status(500).json({ error: error.message })
