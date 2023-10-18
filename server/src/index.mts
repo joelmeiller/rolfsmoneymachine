@@ -5,6 +5,7 @@ import type { Request } from 'express'
 import express from 'express'
 import morgan from 'morgan'
 import path from 'path'
+import cors from 'cors'
 import { Config } from './config.mjs'
 import { DeepLController } from './controllers/DeepLController.mjs'
 
@@ -36,13 +37,14 @@ async function startServer() {
     })
   )
   app.use(compression())
+  app.use(cors())
 
   // parse application/json
   app.use(bodyParser.json())
 
   // DeepL services
   const deepLController = DeepLController()
-  app.get(deepLController.translatePath, deepLController.translate)
+  app.post(deepLController.translatePath, deepLController.translate)
 
   // https://expressjs.com/en/api.html#express.json
   app.use(express.json())

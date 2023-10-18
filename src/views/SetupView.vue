@@ -12,15 +12,17 @@ const props = defineProps<{
   }
 }>()
 
-const { setConfig } = useConfigStore()
+const { numRows, startRow, setConfig } = useConfigStore()
 
-const languages = ref<Language[]>([Language.English])
-const numRows = ref<number>(10)
+const languages = ref<Language[]>([Language.French, Language.Italian, Language.English])
+const numRowsField = ref<number>(numRows)
+const startRowField = ref<number>(startRow)
 
 const onSubmit = () => {
   setConfig({
     languages: languages.value,
-    numRows: numRows.value,
+    numRows: numRowsField.value,
+    startRow: startRowField.value,
   })
 
   props.button.onClick()
@@ -30,16 +32,11 @@ const onSubmit = () => {
 <template>
   <main>
     <h2>{{ title }}</h2>
+
     <section>
       <form>
         <div>
           <Label text="In welche Sprachen soll übersetzt werden:" />
-
-          <div class="checkbox-option">
-            <input type="checkbox" :id="Language.English" :value="Language.English" v-model="languages">
-            <label :for="Language.English">Englisch ☕️</label>
-          </div>
-
           <div class="checkbox-option">
             <input type="checkbox" :id="Language.French" :value="Language.French" v-model="languages">
             <label :for="Language.French">Französisch 🥐</label>
@@ -49,12 +46,24 @@ const onSubmit = () => {
             <input type="checkbox" :id="Language.Italian" :value="Language.Italian" v-model="languages">
             <label :for="Language.Italian">Italienisch 🍕</label>
           </div>
+
+          <div class="checkbox-option">
+            <input type="checkbox" :id="Language.English" :value="Language.English" v-model="languages">
+            <label :for="Language.English">Englisch ☕️</label>
+          </div>
+        </div>
+
+        <div>
+          <Label text="Start Zeile:" />
+          <input type="number" min="0" step="1" v-model="startRowField" />
         </div>
 
         <div>
           <Label text="Anzahl zu übersetzender Zeilen:" />
-          <input type="number" min="0" step="1" v-model="numRows" />
+          <input type="number" min="0" step="1" v-model="numRowsField" />
         </div>
+
+
 
         <button @click="onSubmit">{{ button.label }}</button>
       </form>

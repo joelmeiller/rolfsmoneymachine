@@ -1,11 +1,10 @@
-import type { TranslatorProgress, TranslatorResult } from '../types/translator'
+import type { TranslatorConfig, TranslatorProgress, TranslatorResult } from '../types/translator'
 import { Language } from '../types/enums'
 import { TranslatorWorker } from './TranslatorWorker'
 export const TranslatorService = {
   run: (params: {
     file: File
-    languages: Array<Language>
-    numRows: number
+    config: TranslatorConfig
     onDone: (data: TranslatorResult) => void
     onProgress: (data: TranslatorProgress) => void
   }) => {

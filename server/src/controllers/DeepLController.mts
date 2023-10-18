@@ -22,7 +22,7 @@ const translateMock = (params: TranslateTextParams): Promise<TranslateTextResult
   new Promise((resolve) => {
     setTimeout(() => {
       resolve(params.textList.map((text) => `Translated: ${text}`))
-    }, 1000)
+    }, 50)
   })
 
 const translateText = Config.DEEPL_API_ACTIVE ? translate : translateMock

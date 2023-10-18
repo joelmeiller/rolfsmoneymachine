@@ -1,17 +1,18 @@
 <script setup lang="ts">
+import { useResultStore } from '@/stores/result';
+
 defineProps<{
   title: string
   description: string
-  data: {
-    numTranslated: number
-    numFailed: number
-    numTotal: number
-  }
   button: {
     label: string
     onClick: () => void
   }
 }>()
+
+const { numTranslated, numFailed, numTotal } = useResultStore()
+
+
 </script>
 
 <template>
@@ -20,9 +21,9 @@ defineProps<{
 
     <section>
       <p>{{ description }}</p>
-      <p>Erfolreich übersetzt: {{ data.numTranslated }}</p>
-      <p>Übersetzung fehlgeschlagen: {{ data.numTranslated }}</p>
-      <p>Total: {{ data.numTotal }}</p>
+      <p>Erfolreich übersetzt: {{ numTranslated }}</p>
+      <p>Übersetzung fehlgeschlagen: {{ numFailed }}</p>
+      <p>Total: {{ numTotal }}</p>
 
       <button @click="button.onClick">{{ button.label }}</button>
     </section>

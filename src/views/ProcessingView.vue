@@ -2,6 +2,7 @@
 import { defineProps } from 'vue'
 import { useConfigStore } from '@/stores/config';
 import { TranslatorService } from '@/services/TranslatorService'
+import { useResultStore } from '@/stores/result';
 
 const props = defineProps<{
   title: string
@@ -13,7 +14,8 @@ const props = defineProps<{
   }
 }>()
 
-const { file, languages, numRows } = useConfigStore()
+const { file, languages, numRows, startRow } = useConfigStore()
+const { setResult } = useResultStore()
 
 // Go back to start if there is a missing config
 if (file === null || languages.length === 0 || numRows === 0) {
@@ -22,10 +24,13 @@ if (file === null || languages.length === 0 || numRows === 0) {
 
 TranslatorService.run({
   file: file!,
-  languages,
-  numRows,
+  config: {
+    languages,
+    numRows,
+    startRow,
+  },
   onDone: (result) => {
-    console.log(result)
+    setResult(result)
     props.onDone()
   },
   onProgress: (progress) => {
