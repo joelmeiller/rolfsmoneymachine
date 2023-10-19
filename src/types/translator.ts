@@ -6,6 +6,7 @@ export type TranslatorConfig = {
 }
 export type TranslatorProgress = {
   numTranslated: number
+  numFailed: number
 }
 
 export type TranslatorResult = {

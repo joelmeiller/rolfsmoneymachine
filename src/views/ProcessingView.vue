@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
 import { useConfigStore } from '@/stores/config';
 import { TranslatorService } from '@/services/TranslatorService'
 import { useResultStore } from '@/stores/result';
+import { ref } from 'vue';
 
 const props = defineProps<{
   title: string
@@ -14,8 +14,10 @@ const props = defineProps<{
   }
 }>()
 
-const { file, languages, numRows, startRow } = useConfigStore()
+const { file, languages, numRows, startRow, setConfig } = useConfigStore()
 const { setResult } = useResultStore()
+
+const numTranslated = ref<number>(0)
 
 // Go back to start if there is a missing config
 if (file === null || languages.length === 0 || numRows === 0) {
@@ -31,10 +33,19 @@ TranslatorService.run({
   },
   onDone: (result) => {
     setResult(result)
+
+    if (!result.error) {
+      setConfig({
+        languages,
+        numRows,
+        startRow: startRow + numRows,
+      })
+    }
+
     props.onDone()
   },
   onProgress: (progress) => {
-    console.log(progress)
+    numTranslated.value = progress.numTranslated + progress.numFailed
   },
 })
 
@@ -46,6 +57,7 @@ TranslatorService.run({
 
     <section>
       <p>{{ description }}</p>
+      <p>Fortschritt: <b>{{ numTranslated }}</b> / {{ numRows }} Zeilen bearbeitet</p>
       <button type="button" @click="onAbort.onClick">{{ onAbort.label }}</button>
     </section>
 

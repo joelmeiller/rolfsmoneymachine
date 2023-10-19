@@ -4,8 +4,8 @@ import { Language } from '../types/enums'
 import type { TranslatorConfig, TranslatorProgress, TranslatorResult } from '../types/translator'
 
 // Define your DeepL API key and endpoint
-const apiKey = 'YOUR_DEEPL_API_KEY'
-const deepLApiEndpoint = 'https://api.deepl.com/v2/translate'
+const apiKey = '*'
+const deepLApiEndpoint = 'https://api-free.deepl.com/v2/translate'
 const serverDeepLApiEndpoint = 'http://localhost:5201/api/deepL/translate'
 
 const delay = (ms: number) => {
@@ -13,7 +13,11 @@ const delay = (ms: number) => {
 }
 
 // Function to translate text using DeepL API
-const translateText = async (textList: Array<string>, targetLanguage: string): Promise<string> => {
+// https://support.deepl.com/hc/en-us/articles/7869276014748-API-request-blocked-by-CORS-policy-
+const NOT_WORKING_translateText = async (
+  textList: Array<string>,
+  targetLanguage: string
+): Promise<string> => {
   try {
     const response = await axios.post(deepLApiEndpoint, {
       text: textList,
@@ -32,7 +36,7 @@ const translateText = async (textList: Array<string>, targetLanguage: string): P
 const translateTextServer = async (
   textList: Array<string>,
   targetLanguage: string
-): Promise<string> => {
+): Promise<Array<string>> => {
   try {
     const response = await axios.post(serverDeepLApiEndpoint, {
       textList,
@@ -41,8 +45,8 @@ const translateTextServer = async (
     await delay(50)
     return response.data.translatedTextList
   } catch (error: any) {
-    console.error(`Error translating text: ${error.message}`)
-    return ''
+    console.error(`Error translating text: ${error.error}`)
+    return []
   }
 }
 
@@ -119,55 +123,53 @@ export const TranslatorWorker = {
       }
 
       // French translation
-      const frenchTranslation = await translateTextServer(textList, 'fr')
-      if (frenchTranslation.length > 0) {
-        // Set the translations in the worksheet
-        worksheet[`E${rowIndex}`] = { t: 's', v: frenchTranslation[0] }
-
-        if (frenchTranslation.length > 1) {
+      if (params.config.languages.includes(Language.French)) {
+        const frenchTranslation = await translateTextServer(textList, Language.French)
+        if (frenchTranslation.length > 0) {
           // Set the translations in the worksheet
-          worksheet[`D${rowIndex}`] = { t: 's', v: frenchTranslation[1] }
+          worksheet[`D${rowIndex}`] = { t: 's', v: frenchTranslation[0] }
+
+          if (frenchTranslation.length > 1) {
+            // Set the translations in the worksheet
+            worksheet[`E${rowIndex}`] = { t: 's', v: frenchTranslation[1] }
+          }
+        } else {
+          failed = true
         }
-      } else {
-        failed = true
       }
 
       // Italian translation
-      const italianTranslation = await translateTextServer(textList, 'it')
-      if (italianTranslation.length > 0) {
-        // Set the translations in the worksheet
-        worksheet[`G${rowIndex}`] = { t: 's', v: italianTranslation[0] }
-
-        if (italianTranslation.length > 1) {
+      if (params.config.languages.includes(Language.Italian)) {
+        const italianTranslation = await translateTextServer(textList, Language.Italian)
+        if (italianTranslation.length > 0) {
           // Set the translations in the worksheet
-          worksheet[`F${rowIndex}`] = { t: 's', v: italianTranslation[1] }
+          worksheet[`F${rowIndex}`] = { t: 's', v: italianTranslation[0] }
+
+          if (italianTranslation.length > 1) {
+            // Set the translations in the worksheet
+            worksheet[`G${rowIndex}`] = { t: 's', v: italianTranslation[1] }
+          }
+        } else {
+          failed = true
         }
-      } else {
-        failed = true
       }
 
       // English translation
-      const englishTranslation = await translateTextServer(textList, 'en')
-      if (englishTranslation.length > 0) {
-        // Set the translations in the worksheet
-        worksheet[`I${rowIndex}`] = { t: 's', v: englishTranslation[0] }
-
-        if (englishTranslation.length > 1) {
+      if (params.config.languages.includes(Language.English)) {
+        const englishTranslation = await translateTextServer(textList, Language.English)
+        if (englishTranslation.length > 0) {
           // Set the translations in the worksheet
-          worksheet[`H${rowIndex}`] = { t: 's', v: englishTranslation[1] }
+          worksheet[`H${rowIndex}`] = { t: 's', v: englishTranslation[0] }
+
+          if (englishTranslation.length > 1) {
+            // Set the translations in the worksheet
+            worksheet[`I${rowIndex}`] = { t: 's', v: englishTranslation[1] }
+          }
+        } else {
+          failed = true
         }
-      } else {
-        failed = true
       }
 
-      // Push the translations to the translatedData array
-      // translatedData.push({
-      //   SourceLanguage: 'German',
-      //   SourceText: sourceText,
-      //   FrenchTranslation: frenchTranslation,
-      //   ItalianTranslation: italianTranslation,
-      //   EnglishTranslation: englishTranslation
-      // })
       if (failed) {
         numFailed++
       } else {
@@ -175,7 +177,8 @@ export const TranslatorWorker = {
       }
 
       params.onProgress({
-        numTranslated
+        numTranslated,
+        numFailed,
       })
     }
 
@@ -185,7 +188,7 @@ export const TranslatorWorker = {
     params.onDone({
       error: null,
       numTranslated,
-      numFailed: 0,
+      numFailed,
       numTotal: numTranslated + numFailed
     })
 

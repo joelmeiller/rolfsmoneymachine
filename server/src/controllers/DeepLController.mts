@@ -14,7 +14,7 @@ type TranslateTextParams = {
 type TranslateTextResult = Array<string>
 
 const translate = async (params: TranslateTextParams): Promise<TranslateTextResult> => {
-  const results = await Translator.translateText(params.textList, null, params.targetLanguage)
+  const results = await Translator.translateText(params.textList, 'de', params.targetLanguage, {})
   return results.map((result) => result.text)
 }
 

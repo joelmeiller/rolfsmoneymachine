@@ -12,15 +12,15 @@ const props = defineProps<{
   }
 }>()
 
-const { numRows, startRow, setConfig } = useConfigStore()
+const { numRows, startRow, languages, setConfig } = useConfigStore()
 
-const languages = ref<Language[]>([Language.French, Language.Italian, Language.English])
+const languagesField = ref<Language[]>(languages)
 const numRowsField = ref<number>(numRows)
 const startRowField = ref<number>(startRow)
 
 const onSubmit = () => {
   setConfig({
-    languages: languages.value,
+    languages: languagesField.value,
     numRows: numRowsField.value,
     startRow: startRowField.value,
   })
@@ -38,17 +38,17 @@ const onSubmit = () => {
         <div>
           <Label text="In welche Sprachen soll übersetzt werden:" />
           <div class="checkbox-option">
-            <input type="checkbox" :id="Language.French" :value="Language.French" v-model="languages">
+            <input type="checkbox" :id="Language.French" :value="Language.French" v-model="languagesField">
             <label :for="Language.French">Französisch 🥐</label>
           </div>
 
           <div class="checkbox-option">
-            <input type="checkbox" :id="Language.Italian" :value="Language.Italian" v-model="languages">
+            <input type="checkbox" :id="Language.Italian" :value="Language.Italian" v-model="languagesField">
             <label :for="Language.Italian">Italienisch 🍕</label>
           </div>
 
           <div class="checkbox-option">
-            <input type="checkbox" :id="Language.English" :value="Language.English" v-model="languages">
+            <input type="checkbox" :id="Language.English" :value="Language.English" v-model="languagesField">
             <label :for="Language.English">Englisch ☕️</label>
           </div>
         </div>

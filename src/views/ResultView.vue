@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useConfigStore } from '@/stores/config';
 import { useResultStore } from '@/stores/result';
 
 defineProps<{
@@ -11,7 +12,6 @@ defineProps<{
 }>()
 
 const { numTranslated, numFailed, numTotal } = useResultStore()
-
 
 </script>
 
