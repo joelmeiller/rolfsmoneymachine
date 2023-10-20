@@ -1,0 +1,23 @@
+{
+  "name": "rolfsmoneymachine",
+  "version": "1.0.0",
+  "private": true,
+  "description": "The machine to make real money - but only for Rolf :D",
+  "author": "Joel Meiller <joel.meiller@bob.ch>",
+  "type": "module",
+  "scripts": {
+    "start": "node build/index.mjs"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "deepl-node": "^1.10.2",
+    "dirname-filename-esm": "^1.1.1",
+    "dotenv": "^16.0.0",
+    "envalid": "^7.2.2",
+    "express": "^4.17.1",
+    "helmet": "^5.0.2",
+    "morgan": "^1.10.0"
+  }
+}

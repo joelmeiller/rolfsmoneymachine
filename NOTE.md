@@ -1,0 +1,4 @@
+- Installationsanleitung
+- Too long (> 30 Zeiche)
+- Bundle mit Active DeepL Translation
+- Verbleibende Anzahl Zeichen

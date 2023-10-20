@@ -129,9 +129,16 @@ export const TranslatorWorker = {
           // Set the translations in the worksheet
           worksheet[`D${rowIndex}`] = { t: 's', v: frenchTranslation[0] }
 
+          if (frenchTranslation[0].length > 30) {
+            worksheet[`J${rowIndex}`] = { t: 's', v: 'French: How looong' }
+          }
+
           if (frenchTranslation.length > 1) {
             // Set the translations in the worksheet
             worksheet[`E${rowIndex}`] = { t: 's', v: frenchTranslation[1] }
+            if (frenchTranslation[1].length > 30) {
+              worksheet[`J${rowIndex}`] = { t: 's', v: 'French: How looong' }
+            }
           }
         } else {
           failed = true
@@ -145,9 +152,17 @@ export const TranslatorWorker = {
           // Set the translations in the worksheet
           worksheet[`F${rowIndex}`] = { t: 's', v: italianTranslation[0] }
 
+          if (italianTranslation[0].length > 30) {
+            worksheet[`J${rowIndex}`] = { t: 's', v: 'Italian: How looong' }
+          }
+
           if (italianTranslation.length > 1) {
             // Set the translations in the worksheet
             worksheet[`G${rowIndex}`] = { t: 's', v: italianTranslation[1] }
+
+            if (italianTranslation[1].length > 30) {
+              worksheet[`J${rowIndex}`] = { t: 's', v: 'Italian: How looong' }
+            }
           }
         } else {
           failed = true
@@ -178,7 +193,7 @@ export const TranslatorWorker = {
 
       params.onProgress({
         numTranslated,
-        numFailed,
+        numFailed
       })
     }
 

@@ -1,13 +1,13 @@
 {
-  "name": "bob-dashboard-webapp-server",
-  "version": "0.0.1",
+  "name": "rolfsmoneymachine-server",
+  "version": "1.0.0",
   "private": true,
-  "description": "The backend for frontend (BFF) of the bob-dashboard-webapp application.",
+  "description": "The server for the Rolf's Money Machine app.",
   "author": "Joel Meiller <joel.meiller@bob.ch>",
   "type": "module",
   "scripts": {
     "start": "yarn server:run",
-    "build": "yarn server:clean && yarn server:build",
+    "build": "yarn server:build",
     "server:clean": "rimraf build",
     "server:run": "ts-node ./src/index.mts",
     "server:build": "tsc",
