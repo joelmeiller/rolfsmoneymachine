@@ -11,8 +11,8 @@
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
-    "server:build": "cd server && yarn build",
-    "server:start": "cd server && yarn start"
+    "server:build": "cd server && yarn && yarn build",
+    "server:start": "cd server && yarn server:build:run"
   },
   "dependencies": {
     "@vueuse/core": "^10.5.0",

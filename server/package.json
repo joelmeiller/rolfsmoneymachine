@@ -11,6 +11,7 @@
     "server:clean": "rimraf build",
     "server:run": "ts-node ./src/index.mts",
     "server:build": "tsc",
+    "server:build:run": "node ./build/index.mjs",
     "test": "jest --watch",
     "prettier:fix": "yarn prettier --write ."
   },
