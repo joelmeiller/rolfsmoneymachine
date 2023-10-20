@@ -5,12 +5,14 @@
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
-    "build:bundle": "yarn build && cd server && yarn build",
+    "build:bundle": "yarn build && yarn server:build",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "server:build": "cd server && yarn build",
+    "server:start": "cd server && yarn start"
   },
   "dependencies": {
     "@vueuse/core": "^10.5.0",
