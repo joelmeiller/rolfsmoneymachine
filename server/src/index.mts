@@ -72,7 +72,7 @@ async function startServer() {
 
   console.log(
     logStyleStr,
-    ` 🌸 🧚🏻‍♀️ 🌺 Backend for Frontend available (BfF) at port ${Config.PORT} under ${Config.PUBLIC_URL} 🌼 🐉 🌻 `
+    ` 🌸 🧚🏻‍♀️ 🌺 Backend for Frontend available (BfF) at port ${Config.PORT} 🌼 🐉 🌻 `
   )
   console.log('')
 }

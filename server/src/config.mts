@@ -9,7 +9,6 @@ type EnvConfig = {
   DEEPL_API_ACTIVE: boolean
   NODE_ENV: string
   PORT: number
-  PUBLIC_URL: string
 }
 
 // https://github.com/af/envalid#envalidcleanenvenvironment-validators-options
@@ -23,5 +22,4 @@ export const Config = envalid.cleanEnv<EnvConfig>(process.env, {
     choices: ['production', 'development']
   }),
   PORT: envalid.port({ devDefault: 5201 }),
-  PUBLIC_URL: envalid.url({ devDefault: 'http://localhost:5201' })
 })
