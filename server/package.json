@@ -10,7 +10,7 @@
     "build": "yarn server:build",
     "server:clean": "rimraf build",
     "server:run": "ts-node ./src/index.mts",
-    "server:build": "tsc",
+    "server:build": "tsc && cp -r client/assets build && cp client/index.html build && cp client/favicon.ico build",
     "server:build:run": "node ./build/index.mjs",
     "test": "jest --watch",
     "prettier:fix": "yarn prettier --write ."
