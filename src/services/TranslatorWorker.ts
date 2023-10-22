@@ -171,9 +171,10 @@ export const TranslatorWorker = {
       }
 
       if (languagesTooLong.length > 0) {
+        worksheet['J1'] = { t: 's', v: 'Mehr als 30 Zeichen' }
         worksheet[`J${rowIndex}`] = { t: 's', v: languagesTooLong.join(', ') }
       }
-      
+
       if (failed) {
         numFailed++
       } else {
