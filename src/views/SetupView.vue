@@ -35,30 +35,32 @@ const onSubmit = () => {
 
     <section>
       <form>
-        <div>
+        <div class="field">
           <Label text="In welche Sprachen soll übersetzt werden:" />
-          <div class="checkbox-option">
-            <input type="checkbox" :id="Language.French" :value="Language.French" v-model="languagesField">
-            <label :for="Language.French">Französisch 🥐</label>
-          </div>
+          <div>
+            <div class="checkbox-option">
+              <input type="checkbox" :id="Language.French" :value="Language.French" v-model="languagesField">
+              <label :for="Language.French">Französisch 🥐</label>
+            </div>
 
-          <div class="checkbox-option">
-            <input type="checkbox" :id="Language.Italian" :value="Language.Italian" v-model="languagesField">
-            <label :for="Language.Italian">Italienisch 🍕</label>
-          </div>
+            <div class="checkbox-option">
+              <input type="checkbox" :id="Language.Italian" :value="Language.Italian" v-model="languagesField">
+              <label :for="Language.Italian">Italienisch 🍕</label>
+            </div>
 
-          <div class="checkbox-option">
-            <input type="checkbox" :id="Language.English" :value="Language.English" v-model="languagesField">
-            <label :for="Language.English">Englisch ☕️</label>
+            <div class="checkbox-option">
+              <input type="checkbox" :id="Language.English" :value="Language.English" v-model="languagesField">
+              <label :for="Language.English">Englisch ☕️</label>
+            </div>
           </div>
         </div>
 
-        <div>
+        <div class="field">
           <Label text="Start Zeile:" />
           <input type="number" min="0" step="1" v-model="startRowField" />
         </div>
 
-        <div>
+        <div class="field">
           <Label text="Anzahl zu übersetzender Zeilen:" />
           <input type="number" min="0" step="1" v-model="numRowsField" />
         </div>

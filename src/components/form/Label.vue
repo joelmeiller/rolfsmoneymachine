@@ -13,12 +13,13 @@ defineProps<{
 <style scoped>
 .label {
   font-size: 1rem;
-  margin: 0;
-  width: 128px;
+  width: 240px;
+  margin: 6px 0 0;
 }
 .error {
   color: red;
   font-size: 0.8rem;
-  margin-top: 4px;
+  margin-bottom: 4px;
+  width: 240px;
 }
 </style>

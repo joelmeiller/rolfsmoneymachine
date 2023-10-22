@@ -139,7 +139,6 @@ form > .description {
 form > .field {
   display: flex;
   gap: 16px;
-  align-items: center;
   margin-bottom: 16px;
 }
 
@@ -156,10 +155,6 @@ form > .error {
 
 form > button {
   margin-top: 48px;
-}
-
-label {
-  width: 128px;
 }
 
 input:not([type='checkbox']) {
