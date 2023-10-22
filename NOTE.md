@@ -1,4 +1,4 @@
 - Installationsanleitung
-- Too long (> 30 Zeiche)
-- Bundle mit Active DeepL Translation
-- Verbleibende Anzahl Zeichen
+- Too long (> 30 Zeiche) --> DONE
+- Bundle mit Active DeepL Translation --> DONE
+- Verbleibende Anzahl Zeichen --> DONE

@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import StartRoute from './StartRoute.vue'
+import LoginRoute from './LoginRoute.vue'
+import ProcessingRoute from './ProcessingRoute.vue'
+import ResultRoute from './ResultRoute.vue'
 import SelectFileRoute from './SelectFileRoute.vue'
 import SetupRoute from './SetupRoute.vue'
-import ResultRoute from './ResultRoute.vue'
-import ProcessingRoute from './ProcessingRoute.vue'
+import StartRoute from './StartRoute.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,9 +35,15 @@ const router = createRouter({
       component: ResultRoute
     },
     {
+      path: '/login',
+      name: 'login',
+      component: LoginRoute
+    },
+    {
       path: '/:pathMatch(.*)*',
       redirect: '/start'
     }
+    
   ]
 })
 

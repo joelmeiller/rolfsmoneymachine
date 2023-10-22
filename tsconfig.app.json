@@ -4,6 +4,7 @@
   "exclude": ["src/**/__tests__/*", "server", "bundle"],
   "compilerOptions": {
     "baseUrl": ".",
+    "types": ["node"],
     "paths": {
       "@/*": ["./src/*"]
     }

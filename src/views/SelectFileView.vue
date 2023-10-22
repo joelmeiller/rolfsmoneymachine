@@ -21,8 +21,6 @@ const onSelectFile = (event: Event) => {
   }
 }
 
-
-
 </script>
 
 <template>

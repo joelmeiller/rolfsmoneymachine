@@ -70,6 +70,10 @@ p {
   margin: 0 0 1.5em;
 }
 
+b {
+  font-weight: 700;
+}
+
 /*
  * Layout
  */
@@ -128,12 +132,34 @@ form {
   flex-direction: column;
 }
 
-form > div {
+form > .description {
   margin-bottom: 32px;
 }
 
+form > .field {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+form > .field {
+  margin-bottom: 32px;
+}
+
+form > .error {
+  font-size: 0.8rem;
+  font-weight: 400;
+  margin-bottom: 8px;
+  color: red;
+}
+
+form > button {
+  margin-top: 48px;
+}
+
 label {
-  width: 100%;
+  width: 128px;
 }
 
 input:not([type='checkbox']) {

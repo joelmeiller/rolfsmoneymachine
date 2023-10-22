@@ -8,6 +8,7 @@ import path from 'path'
 import cors from 'cors'
 import { Config } from './config.mjs'
 import { DeepLController } from './controllers/DeepLController.mjs'
+import { SessionController } from './controllers/SessionController.mjs'
 
 const __dirname = dirname(import.meta)
 const indexPath = path.resolve(__dirname, '../../build', 'index.html')
@@ -23,6 +24,7 @@ startServer()
 async function startServer() {
   // Create express server application
   const app = express()
+  const sessionController = await SessionController()
 
   // https://expressjs.com/en/advanced/best-practice-performance.html#use-gzip-compression
   app.use(
@@ -37,14 +39,33 @@ async function startServer() {
     })
   )
   app.use(compression())
-  app.use(cors())
+  app.use(
+    cors({
+      origin: 'http://localhost:5173',
+      methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'HEAD'],
+      credentials: true
+    })
+  )
+  app.use(sessionController.createSessionMiddleware())
 
   // parse application/json
   app.use(bodyParser.json())
 
+  // Authentication services
+  app.post('/api/login', (req: Request, res) => {
+    if (req.body.username === Config.USERNAME && req.body.password === Config.PASSWORD) {
+      req.session.authenticated = true
+
+      return res.sendStatus(204)
+    } else {
+      return res.status(401).send({ error: 'Invalid username or password' })
+    }
+  })
+
   // DeepL services
-  const deepLController = DeepLController()
+  const deepLController = DeepLController(sessionController)
   app.post(deepLController.translatePath, deepLController.translate)
+  app.get(deepLController.usagePath, deepLController.usage)
 
   // https://expressjs.com/en/api.html#express.json
   app.use(express.json())

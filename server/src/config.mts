@@ -9,6 +9,10 @@ type EnvConfig = {
   DEEPL_API_ACTIVE: boolean
   NODE_ENV: string
   PORT: number
+  EXPRESS_SESSION_NAME: string
+  EXPRESS_SESSION_SECRET: string
+  USERNAME: string
+  PASSWORD: string
 }
 
 // https://github.com/af/envalid#envalidcleanenvenvironment-validators-options
@@ -22,4 +26,12 @@ export const Config = envalid.cleanEnv<EnvConfig>(process.env, {
     choices: ['production', 'development']
   }),
   PORT: envalid.port({ devDefault: 5201 }),
+
+  // Express session
+  EXPRESS_SESSION_NAME: envalid.str({ default: 'rolfs-money-machine' }),
+  EXPRESS_SESSION_SECRET: envalid.str({ default: 'G8qLOJVK*HcfIvL8T8Pg' }),
+
+  // Authentication
+  USERNAME: envalid.str({ default: 'Rolf' }),
+  PASSWORD: envalid.str({ devDefault: '1234' })
 })

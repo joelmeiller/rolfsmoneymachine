@@ -3,34 +3,11 @@ import * as XLSX from 'xlsx'
 import { Language } from '../types/enums'
 import type { TranslatorConfig, TranslatorProgress, TranslatorResult } from '../types/translator'
 
-// Define your DeepL API key and endpoint
-const apiKey = '*'
-const deepLApiEndpoint = 'https://api-free.deepl.com/v2/translate'
-const serverDeepLApiEndpoint = 'http://localhost:5201/api/deepL/translate'
+export const serverDeepLApiEndpoint = `${import.meta.env.VITE_API_URL}/deepL`
+// const serverDeepLApiEndpoint = 'https://rolfs-money-machine.onrender.com/api/deepL/translate'
 
 const delay = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms))
-}
-
-// Function to translate text using DeepL API
-// https://support.deepl.com/hc/en-us/articles/7869276014748-API-request-blocked-by-CORS-policy-
-const NOT_WORKING_translateText = async (
-  textList: Array<string>,
-  targetLanguage: string
-): Promise<string> => {
-  try {
-    const response = await axios.post(deepLApiEndpoint, {
-      text: textList,
-      target_lang: targetLanguage,
-      auth_key: apiKey
-    })
-
-    await delay(50)
-    return response.data.translations.map((translation: { text: string }) => translation.text)
-  } catch (error: any) {
-    console.error(`Error translating text: ${error.message}`)
-    return ''
-  }
 }
 
 const translateTextServer = async (
@@ -38,7 +15,7 @@ const translateTextServer = async (
   targetLanguage: string
 ): Promise<Array<string>> => {
   try {
-    const response = await axios.post(serverDeepLApiEndpoint, {
+    const response = await axios.post(`${serverDeepLApiEndpoint}/translate`, {
       textList,
       targetLanguage
     })
@@ -94,9 +71,10 @@ export const TranslatorWorker = {
     const sheetName = params.workbook.SheetNames[0] // Assuming you want to work with the first sheet
     const worksheet = params.workbook.Sheets[sheetName]
 
-    // Initialize an empty array to store the translated data
-    // const translatedData: Record<string, string>[] = []
+    // Shift rows after english description (I) 1 column to the right
+    // TODO: XLSX.utils.sheet_shift(worksheet, 0, 1, 1)
 
+    // Initialize counters
     let numTranslated = 0
     let numFailed = 0
 
@@ -105,6 +83,7 @@ export const TranslatorWorker = {
       const cellB = worksheet[`B${rowIndex}`]
       const cellC = worksheet[`C${rowIndex}`]
       let failed = false
+      let languagesTooLong = []
 
       if (rowIndex >= params.config.startRow + params.config.numRows || !cellB || !cellB.v) {
         // Break the loop when there are no more cells with data
@@ -130,14 +109,14 @@ export const TranslatorWorker = {
           worksheet[`D${rowIndex}`] = { t: 's', v: frenchTranslation[0] }
 
           if (frenchTranslation[0].length > 30) {
-            worksheet[`J${rowIndex}`] = { t: 's', v: 'French: How looong' }
+            languagesTooLong.push(Language.French)
           }
 
           if (frenchTranslation.length > 1) {
             // Set the translations in the worksheet
             worksheet[`E${rowIndex}`] = { t: 's', v: frenchTranslation[1] }
             if (frenchTranslation[1].length > 30) {
-              worksheet[`J${rowIndex}`] = { t: 's', v: 'French: How looong' }
+              languagesTooLong.push(Language.French)
             }
           }
         } else {
@@ -153,7 +132,7 @@ export const TranslatorWorker = {
           worksheet[`F${rowIndex}`] = { t: 's', v: italianTranslation[0] }
 
           if (italianTranslation[0].length > 30) {
-            worksheet[`J${rowIndex}`] = { t: 's', v: 'Italian: How looong' }
+            languagesTooLong.push(Language.Italian)
           }
 
           if (italianTranslation.length > 1) {
@@ -161,7 +140,7 @@ export const TranslatorWorker = {
             worksheet[`G${rowIndex}`] = { t: 's', v: italianTranslation[1] }
 
             if (italianTranslation[1].length > 30) {
-              worksheet[`J${rowIndex}`] = { t: 's', v: 'Italian: How looong' }
+              languagesTooLong.push(Language.Italian)
             }
           }
         } else {
@@ -175,16 +154,26 @@ export const TranslatorWorker = {
         if (englishTranslation.length > 0) {
           // Set the translations in the worksheet
           worksheet[`H${rowIndex}`] = { t: 's', v: englishTranslation[0] }
+          if (englishTranslation[0].length > 30) {
+            languagesTooLong.push(Language.English)
+          }
 
           if (englishTranslation.length > 1) {
             // Set the translations in the worksheet
             worksheet[`I${rowIndex}`] = { t: 's', v: englishTranslation[1] }
+            if (englishTranslation[0].length > 30) {
+              languagesTooLong.push(Language.English)
+            }
           }
         } else {
           failed = true
         }
       }
 
+      if (languagesTooLong.length > 0) {
+        worksheet[`J${rowIndex}`] = { t: 's', v: languagesTooLong.join(', ') }
+      }
+      
       if (failed) {
         numFailed++
       } else {
@@ -216,5 +205,23 @@ export const TranslatorWorker = {
     // TODO: await fs.writeFile('output.csv', csvData, 'utf-8')
 
     // console.log('Translation completed. Results saved to output.csv', csvData)
+  },
+
+  usage: async (): Promise<{ count: number; limit: number }> => {
+    try {
+      const response = await axios.get(`${serverDeepLApiEndpoint}/usage`)
+      console.log('USAGE', response)
+
+      return {
+        count: response.data.usage.character.count,
+        limit: response.data.usage.character.limit
+      }
+    } catch (error: any) {
+      console.error(`Error getting usage: ${error.error}`)
+      return {
+        count: 0,
+        limit: 0
+      }
+    }
   }
 }

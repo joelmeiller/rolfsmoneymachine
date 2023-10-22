@@ -1,5 +1,4 @@
 import type { TranslatorConfig, TranslatorProgress, TranslatorResult } from '../types/translator'
-import { Language } from '../types/enums'
 import { TranslatorWorker } from './TranslatorWorker'
 export const TranslatorService = {
   run: (params: {
@@ -20,5 +19,7 @@ export const TranslatorService = {
     //     params.onFinished(data)
     //   }
     // }
-  }
+  },
+
+  usage: TranslatorWorker.usage
 }
