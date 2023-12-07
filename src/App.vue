@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
 import Title from './components/Title.vue'
+import Background from './components/Background.vue';
 </script>
 
 <template>
+  <Background />
   <header>
-    <!-- <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" /> -->
-
     <div class="wrapper">
       <Title text="Rolf's Money Machine!" />
     </div>
@@ -52,7 +52,7 @@ nav a:first-of-type {
 }
 
 @media (min-width: 1024px) {
-  
+
   .logo {
     margin: 0 2rem 0 0;
   }
