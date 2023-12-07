@@ -6,7 +6,7 @@ defineProps<{
 
 <template>
   <div class="text-center">
-    <h1>💸 💸 💸<br />{{ text }}<br /><span class="money-after">💸 💸 💸</span></h1>
+    <h1>💸 🎅🏼 💸<br />{{ text }}<br /><span class="money-after">💸 🎅🏼 💸</span></h1>
   </div>
 </template>
 
